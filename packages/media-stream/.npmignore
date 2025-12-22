@@ -1,0 +1,6 @@
+__tests__/
+docs/
+src/
+rollup.config.js
+tsconfig.json
+vitest.config.ts
