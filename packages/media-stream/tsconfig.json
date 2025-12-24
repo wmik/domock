@@ -11,6 +11,6 @@
     "moduleResolution": "node",
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src", "__tests__"],
+  "files": ["index.ts"],
   "exclude": ["node_modules", "dist"]
 }
