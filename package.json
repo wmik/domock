@@ -3,5 +3,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "3.7.4"
+  },
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,css,md}\""
+  }
 }
