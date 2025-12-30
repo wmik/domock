@@ -9,11 +9,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui"
   },
-  "keywords": [
-    "media",
-    "recorder",
-    "testing"
-  ],
+  "keywords": ["media", "recorder", "testing"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wmik/mocks.git"
@@ -22,6 +18,9 @@
   "author": "wmik <contact@wmik.me>",
   "license": "MIT",
   "description": "Custom media recorder api for testing",
+  "dependencies": {
+    "@mocks/media-stream": "workspace:*"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.2",

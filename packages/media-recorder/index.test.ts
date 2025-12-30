@@ -38,8 +38,10 @@ describe('unit tests', () => {
     expect(mediaRecorder.state).toBe('inactive');
   });
 
-  it('should dispatch events correctly', () => {
-    let mediaRecorder = new MediaRecorder();
+  it('should dispatch events correctly', async () => {
+    let mediaRecorder = new MediaRecorder(undefined, {
+      mimeType: 'audio/webm'
+    });
 
     expect(mediaRecorder.state).toBe('inactive');
 
@@ -72,8 +74,17 @@ describe('unit tests', () => {
     mediaRecorder.requestData();
     mediaRecorder.stop();
 
-    expect(dataHandler).toHaveBeenCalledTimes(2);
     expect(stopHandler).toHaveBeenCalled();
+    expect(dataHandler).toHaveBeenCalledTimes(2);
+    expect(dataHandler).toHaveBeenCalledWith(expect.any(BlobEvent));
+
+    let [call] = dataHandler.mock.calls;
+    let [event] = call;
+    let blob = event.data;
+
+    expect(blob).toBeInstanceOf(Blob);
+    expect(blob.type).toBe('audio/webm');
+    expect(blob.size).toBe('test'.length);
   });
 
   it('throws Exceptions correctly', () => {
