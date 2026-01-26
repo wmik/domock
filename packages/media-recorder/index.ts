@@ -88,7 +88,7 @@ export class MediaRecorder extends EventTarget {
     }
 
     let event = new BlobEvent('dataavailable', {
-      data: new Blob(['test'], { type: this.mimeType }),
+      data: new Blob([noiseGenerator()], { type: this.mimeType }),
       timecode: Date.now()
     });
 
@@ -153,4 +153,17 @@ export class MediaRecorder extends EventTarget {
       this.onstop(stopEvent);
     }
   }
+}
+
+function noiseGenerator() {
+  let sampleRate = 44100;
+  let duration = 1; //seconds
+  let bufferSize = sampleRate * duration;
+  let noiseData = new Float32Array(bufferSize)
+
+  for(let i = 0; i < bufferSize; i++) {
+    noiseData[i] = Math.random() * 2 - 1
+  }
+
+  return noiseData.buffer;
 }
