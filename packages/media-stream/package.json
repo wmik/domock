@@ -22,10 +22,8 @@
   "author": "wmik <contact@wmik.me>",
   "license": "MIT",
   "description": "Custom media stream api for testing",
-  "dependencies": {
-    "@mocks/media-stream-track": "workspace:*"
-  },
   "devDependencies": {
+    "@mocks/media-stream-track": "workspace:*",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.2",
     "@rollup/plugin-typescript": "^12.1.4",

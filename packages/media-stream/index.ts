@@ -21,7 +21,7 @@ export class MediaStream extends EventTarget {
   onaddtrack: Handler | null;
   oninactive: null;
   onremovetrack: Handler | null;
-  private tracks: Track[];
+  #tracks: Track[];
 
   constructor(streamOrTracks: MediaStream | TrackList) {
     super();
@@ -32,18 +32,18 @@ export class MediaStream extends EventTarget {
     this.onaddtrack = null;
     this.oninactive = null;
     this.onremovetrack = null;
-    this.tracks = [];
+    this.#tracks = [];
 
     if (Array.isArray(streamOrTracks)) {
-      this.tracks = [...streamOrTracks];
+      this.#tracks = [...streamOrTracks];
     } else if (streamOrTracks instanceof MediaStream) {
-      this.tracks = streamOrTracks.getTracks();
+      this.#tracks = streamOrTracks.getTracks();
     }
   }
 
   addTrack(track: Track) {
-    if (!this.tracks.includes(track)) {
-      this.tracks.push(track);
+    if (!this.#tracks.includes(track)) {
+      this.#tracks.push(track);
 
       let event = new Event('addtrack');
 
@@ -60,25 +60,25 @@ export class MediaStream extends EventTarget {
   }
 
   getAudioTracks() {
-    return this.tracks.filter(track => track.kind === 'audio');
+    return this.#tracks.filter(track => track.kind === 'audio');
   }
 
   getTrackById(id: string) {
-    return this.tracks.find(track => track.id === id);
+    return this.#tracks.find(track => track.id === id);
   }
 
   getTracks() {
-    return [...this.tracks];
+    return [...this.#tracks];
   }
 
   getVideoTracks() {
-    return this.tracks.filter(track => track.kind === 'video');
+    return this.#tracks.filter(track => track.kind === 'video');
   }
 
   removeTrack(track: Track) {
-    const index = this.tracks.indexOf(track);
+    const index = this.#tracks.indexOf(track);
     if (index !== -1) {
-      this.tracks.splice(index, 1);
+      this.#tracks.splice(index, 1);
 
       let event = new Event('removetrack');
 
