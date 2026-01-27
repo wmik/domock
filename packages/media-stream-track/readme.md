@@ -9,7 +9,7 @@
 
 ## Installation
 
-> `npm install @mocks/media-stream-track`
+> `npm install @domock/media-stream-track`
 
 ## License
 

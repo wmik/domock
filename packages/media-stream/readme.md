@@ -9,7 +9,7 @@
 
 ## Installation
 
-> `npm install @mocks/media-stream`
+> `npm install @domock/media-stream`
 
 ## License
 

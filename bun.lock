@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 1,
   "workspaces": {
     "": {
       "name": "mocks",
@@ -11,11 +10,9 @@
     "packages/media-recorder": {
       "name": "@mocks/media-recorder",
       "version": "1.0.0-alpha.0",
-      "dependencies": {
-        "@mocks/media-stream": "workspace:*",
-        "@mocks/media-stream-track": "workspace:*",
-      },
       "devDependencies": {
+        "@domock/media-stream": "^1.0.0-alpha.1",
+        "@domock/media-stream-track": "^1.0.0-alpha.0",
         "@rollup/plugin-commonjs": "^28.0.6",
         "@rollup/plugin-node-resolve": "^16.0.2",
         "@rollup/plugin-typescript": "^12.1.4",
@@ -33,12 +30,10 @@
       },
     },
     "packages/media-stream": {
-      "name": "@mocks/media-stream",
-      "version": "1.0.0-alpha.0",
-      "dependencies": {
-        "@mocks/media-stream-track": "workspace:*",
-      },
+      "name": "@domock/media-stream",
+      "version": "1.0.0-alpha.1",
       "devDependencies": {
+        "@domock/media-stream-track": "^1.0.0-alpha.0",
         "@rollup/plugin-commonjs": "^28.0.6",
         "@rollup/plugin-node-resolve": "^16.0.2",
         "@rollup/plugin-typescript": "^12.1.4",
@@ -55,7 +50,7 @@
       },
     },
     "packages/media-stream-track": {
-      "name": "@mocks/media-stream-track",
+      "name": "@domock/media-stream-track",
       "version": "1.0.0-alpha.0",
       "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.6",
@@ -112,6 +107,10 @@
     "@csstools/css-syntax-patches-for-csstree": ["@csstools/css-syntax-patches-for-csstree@1.0.22", "", {}, "sha512-qBcx6zYlhleiFfdtzkRgwNC7VVoAwfK76Vmsw5t+PbvtdknO9StgRk7ROvq9so1iqbdW4uLIDAsXRsTfUrIoOw=="],
 
     "@csstools/css-tokenizer": ["@csstools/css-tokenizer@3.0.4", "", {}, "sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw=="],
+
+    "@domock/media-stream": ["@domock/media-stream@workspace:packages/media-stream"],
+
+    "@domock/media-stream-track": ["@domock/media-stream-track@workspace:packages/media-stream-track"],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.27.2", "", { "os": "aix", "cpu": "ppc64" }, "sha512-GZMB+a0mOMZs4MpDbj8RJp4cw+w1WV5NYD6xzgvzUJ5Ek2jerwfO2eADyI6ExDSUED+1X8aMbegahsJi+8mgpw=="],
 
@@ -178,10 +177,6 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@mocks/media-recorder": ["@mocks/media-recorder@workspace:packages/media-recorder"],
-
-    "@mocks/media-stream": ["@mocks/media-stream@workspace:packages/media-stream"],
-
-    "@mocks/media-stream-track": ["@mocks/media-stream-track@workspace:packages/media-stream-track"],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
@@ -546,6 +541,10 @@
     "xml-name-validator": ["xml-name-validator@5.0.0", "", {}, "sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg=="],
 
     "xmlchars": ["xmlchars@2.2.0", "", {}, "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw=="],
+
+    "@mocks/media-recorder/@domock/media-stream": ["@domock/media-stream@1.0.0-alpha.1", "", {}, "sha512-xEDpdLhrFX/ko9ci6nrGjib7i4koyvOc6PHeaQ48EJqG9ItUyxWdL4/fgo/QdIuWp4Sz1z/TngiOp+dhxzAaXw=="],
+
+    "@mocks/media-recorder/@domock/media-stream-track": ["@domock/media-stream-track@1.0.0-alpha.0", "", {}, "sha512-sDCPh1/pnlKSL57WcFOAII/f1lHet9YuGBtBgYz6S9ba7hZ/jCqb1QTzIae+ZgI7cTe6Jf734MJaY76kS/Tf6Q=="],
 
     "@testing-library/jest-dom/aria-query": ["aria-query@5.3.2", "", {}, "sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw=="],
 

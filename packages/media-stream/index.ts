@@ -1,4 +1,4 @@
-import { MediaStreamTrack } from '@mocks/media-stream-track';
+import { MediaStreamTrack } from '@domock/media-stream-track';
 
 function uuid() {
   return [

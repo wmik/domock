@@ -1,5 +1,5 @@
-import { MediaStreamTrack } from '@mocks/media-stream-track';
-import { MediaStream } from '@mocks/media-stream';
+import { MediaStreamTrack } from '@domock/media-stream-track';
+import { MediaStream } from '@domock/media-stream';
 import { MediaRecorder } from './index';
 
 describe('unit tests', () => {

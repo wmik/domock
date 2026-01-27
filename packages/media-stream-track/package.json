@@ -1,5 +1,5 @@
 {
-  "name": "@mocks/media-stream-track",
+  "name": "@domock/media-stream-track",
   "version": "1.0.0-alpha.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",

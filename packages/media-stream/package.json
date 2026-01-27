@@ -1,6 +1,6 @@
 {
-  "name": "@mocks/media-stream",
-  "version": "1.0.0-alpha.0",
+  "name": "@domock/media-stream",
+  "version": "1.0.0-alpha.1",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
   "license": "MIT",
   "description": "Custom media stream api for testing",
   "devDependencies": {
-    "@mocks/media-stream-track": "workspace:*",
+    "@domock/media-stream-track": "^1.0.0-alpha.0",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.2",
     "@rollup/plugin-typescript": "^12.1.4",

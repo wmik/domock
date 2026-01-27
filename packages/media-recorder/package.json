@@ -1,5 +1,5 @@
 {
-  "name": "@mocks/media-recorder",
+  "name": "@domock/media-recorder",
   "version": "1.0.0-alpha.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -19,8 +19,8 @@
   "license": "MIT",
   "description": "Custom media recorder api for testing",
   "devDependencies": {
-    "@mocks/media-stream": "workspace:*",
-    "@mocks/media-stream-track": "workspace:*",
+    "@domock/media-stream": "^1.0.0-alpha.1",
+    "@domock/media-stream-track": "^1.0.0-alpha.0",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.2",
     "@rollup/plugin-typescript": "^12.1.4",

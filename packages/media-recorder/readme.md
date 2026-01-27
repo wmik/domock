@@ -9,7 +9,7 @@
 
 ## Installation
 
-> `npm install @mocks/media-recorder`
+> `npm install @domock/media-recorder`
 
 ## License
 

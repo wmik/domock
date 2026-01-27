@@ -1,4 +1,4 @@
-# mocks
+# domocks
 
 > Custom API mocks for testing WebRTC media APIs.
 
@@ -17,9 +17,9 @@ This monorepo contains the following packages:
 Install individual packages as needed:
 
 ```bash
-npm install @mocks/media-stream
-npm install @mocks/media-stream-track
-npm install @mocks/media-recorder
+npm install @domock/media-stream
+npm install @domock/media-stream-track
+npm install @domock/media-recorder
 ```
 
 ## Usage
@@ -27,9 +27,9 @@ npm install @mocks/media-recorder
 Each package provides mock implementations that can be used in test environments. The mocks are designed to behave like their browser counterparts while providing additional testing utilities.
 
 ```javascript
-import { MediaStream } from '@mocks/media-stream';
-import { MediaStreamTrack } from '@mocks/media-stream-track';
-import { MediaRecorder } from '@mocks/media-recorder';
+import { MediaStream } from '@domock/media-stream';
+import { MediaStreamTrack } from '@domock/media-stream-track';
+import { MediaRecorder } from '@domock/media-recorder';
 
 // Use in your tests
 const track = new MediaStreamTrack();

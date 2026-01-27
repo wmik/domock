@@ -1,4 +1,4 @@
-import { MediaStream } from '@mocks/media-stream';
+import { MediaStream } from '@domock/media-stream';
 
 type Handler = (e: Event) => void;
 
@@ -159,10 +159,10 @@ function noiseGenerator() {
   let sampleRate = 44100;
   let duration = 1; //seconds
   let bufferSize = sampleRate * duration;
-  let noiseData = new Float32Array(bufferSize)
+  let noiseData = new Float32Array(bufferSize);
 
-  for(let i = 0; i < bufferSize; i++) {
-    noiseData[i] = Math.random() * 2 - 1
+  for (let i = 0; i < bufferSize; i++) {
+    noiseData[i] = Math.random() * 2 - 1;
   }
 
   return noiseData.buffer;
