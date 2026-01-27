@@ -4,4 +4,6 @@ src/
 rollup.config.js
 tsconfig.json
 vitest.config.ts
-*.test
+vitest.setup.ts
+*.test.ts
+index.ts

@@ -132,8 +132,15 @@ export class MediaStreamTrack extends EventTarget {
   onmute: null;
   onunmute: null;
 
-  private _constraints: MediaTrackConstraints = {};
-  private _settings: MediaTrackSettings = {};
+  #constraints: MediaTrackConstraints = {
+    deviceId: uuid(),
+    groupId: uuid(),
+    displaySurface: 'window',
+    logicalSurface: true,
+    suppressLocalAudioPlayback: true,
+    restrictOwnAudio: true
+  };
+  #settings: MediaTrackSettings = {};
 
   constructor() {
     super();
@@ -157,17 +164,18 @@ export class MediaStreamTrack extends EventTarget {
       return Promise.resolve();
     }
 
-    this._constraints = { ...constraints };
+    this.#constraints = { ...constraints };
 
     // Update settings based on constraints
-    this._settings = {};
+    this.#settings = {};
 
     if ('width' in constraints) {
       const widthConstraint = constraints.width as any;
+
       if (typeof widthConstraint === 'number') {
-        this._settings.width = widthConstraint;
+        this.#settings.width = widthConstraint;
       } else if (widthConstraint && typeof widthConstraint === 'object') {
-        this._settings.width =
+        this.#settings.width =
           widthConstraint.ideal ||
           widthConstraint.exact ||
           widthConstraint.max ||
@@ -177,10 +185,11 @@ export class MediaStreamTrack extends EventTarget {
 
     if ('height' in constraints) {
       const heightConstraint = constraints.height as any;
+
       if (typeof heightConstraint === 'number') {
-        this._settings.height = heightConstraint;
+        this.#settings.height = heightConstraint;
       } else if (heightConstraint && typeof heightConstraint === 'object') {
-        this._settings.height =
+        this.#settings.height =
           heightConstraint.ideal ||
           heightConstraint.exact ||
           heightConstraint.max ||
@@ -190,13 +199,14 @@ export class MediaStreamTrack extends EventTarget {
 
     if ('frameRate' in constraints) {
       const frameRateConstraint = constraints.frameRate as any;
+
       if (typeof frameRateConstraint === 'number') {
-        this._settings.frameRate = frameRateConstraint;
+        this.#settings.frameRate = frameRateConstraint;
       } else if (
         frameRateConstraint &&
         typeof frameRateConstraint === 'object'
       ) {
-        this._settings.frameRate =
+        this.#settings.frameRate =
           frameRateConstraint.ideal ||
           frameRateConstraint.exact ||
           frameRateConstraint.max ||
@@ -206,23 +216,25 @@ export class MediaStreamTrack extends EventTarget {
 
     if ('deviceId' in constraints) {
       const deviceIdConstraint = constraints.deviceId as any;
+
       if (typeof deviceIdConstraint === 'string') {
-        this._settings.deviceId = deviceIdConstraint;
+        this.#settings.deviceId = deviceIdConstraint;
       } else if (deviceIdConstraint && typeof deviceIdConstraint === 'object') {
-        this._settings.deviceId =
+        this.#settings.deviceId =
           deviceIdConstraint.ideal || deviceIdConstraint.exact;
       }
     }
 
     if ('sampleRate' in constraints) {
       const sampleRateConstraint = constraints.sampleRate as any;
+
       if (typeof sampleRateConstraint === 'number') {
-        this._settings.sampleRate = sampleRateConstraint;
+        this.#settings.sampleRate = sampleRateConstraint;
       } else if (
         sampleRateConstraint &&
         typeof sampleRateConstraint === 'object'
       ) {
-        this._settings.sampleRate =
+        this.#settings.sampleRate =
           sampleRateConstraint.ideal ||
           sampleRateConstraint.exact ||
           sampleRateConstraint.max ||
@@ -235,14 +247,16 @@ export class MediaStreamTrack extends EventTarget {
 
   clone(): MediaStreamTrack {
     const cloned = new MediaStreamTrack();
+
     cloned.contentHint = this.contentHint;
     cloned.enabled = this.enabled;
     cloned.kind = this.kind;
     cloned.label = this.label;
     cloned.muted = this.muted;
     cloned.readyState = this.readyState;
-    cloned._constraints = { ...this._constraints };
-    cloned._settings = { ...this._settings };
+    cloned.#constraints = { ...this.#constraints };
+    cloned.#settings = { ...this.#settings };
+
     return cloned;
   }
 
@@ -268,11 +282,11 @@ export class MediaStreamTrack extends EventTarget {
   }
 
   getConstraints(): MediaTrackConstraints {
-    return { ...this._constraints };
+    return { ...this.#constraints };
   }
 
   getSettings(): MediaTrackSettings {
-    return { ...this._settings };
+    return { ...this.#settings };
   }
 
   stop() {

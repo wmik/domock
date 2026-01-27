@@ -13,4 +13,4 @@
 
 ## License
 
-MIT &copy;2025
+MIT &copy;2026
