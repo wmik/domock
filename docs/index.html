@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domock - WebRTC Testing Mocks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e12;
+      --fg: #e8eaed;
+      --accent: #00ff88;
+      --accent-dim: #00cc6a;
+      --grid: #1a2332;
+      --card-bg: #0f1419;
+      --card-border: #1f2937;
+      --code-bg: #161b22;
+    }
+
+    [data-theme="light"] {
+      --bg: #f8f9fa;
+      --fg: #1a1a1a;
+      --accent: #00b366;
+      --accent-dim: #008f52;
+      --grid: #e0e4e8;
+      --card-bg: #ffffff;
+      --card-border: #d1d5db;
+      --code-bg: #f3f4f6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.3;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gridMove {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(50px, 50px);
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--card-border);
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo::before {
+      content: '>';
+      margin-right: 0.5rem;
+      opacity: 0.6;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+      opacity: 0.7;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    .theme-switcher {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .theme-switcher:hover {
+      border-color: var(--accent);
+    }
+
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .theme-switcher:hover .theme-icon {
+      transform: rotate(180deg);
+    }
+
+    .sound-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--fg);
+      margin-left: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .sound-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .sound-toggle.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 6rem 0 4rem;
+      animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      min-width: 280px;
+    }
+
+    .typing-text {
+      display: inline-block;
+      min-width: 200px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 0.9em;
+      background: var(--accent);
+      margin-left: 2px;
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+
+      0%,
+      50% {
+        opacity: 1;
+      }
+
+      51%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--fg) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--fg);
+      opacity: 0.7;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.875rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg);
+      border-color: var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Code Preview */
+    .code-preview {
+      margin: 4rem 0;
+      animation: fadeIn 1s ease-out 0.4s both;
+    }
+
+    .terminal {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .terminal-header {
+      background: var(--card-bg);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--card-border);
+    }
+
+    .terminal-dot.red {
+      background: #ff5f56;
+    }
+
+    .terminal-dot.yellow {
+      background: #ffbd2e;
+    }
+
+    .terminal-dot.green {
+      background: #27c93f;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+
+    .code-line {
+      display: block;
+      opacity: 0;
+      animation: typeIn 0.3s ease-out forwards;
+    }
+
+    .code-line:nth-child(1) {
+      animation-delay: 0.6s;
+    }
+
+    .code-line:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .code-line:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    .code-line:nth-child(4) {
+      animation-delay: 1.2s;
+    }
+
+    .code-line:nth-child(5) {
+      animation-delay: 1.4s;
+    }
+
+    .code-line:nth-child(6) {
+      animation-delay: 1.6s;
+    }
+
+    .code-line:nth-child(7) {
+      animation-delay: 1.8s;
+    }
+
+    @keyframes typeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .code-comment {
+      color: #6e7681;
+    }
+
+    .code-keyword {
+      color: #ff7b72;
+    }
+
+    .code-string {
+      color: #a5d6ff;
+    }
+
+    .code-function {
+      color: #d2a8ff;
+    }
+
+    .code-variable {
+      color: var(--accent);
+    }
+
+    /* Features Grid */
+    .features {
+      padding: 6rem 0;
+      animation: fadeIn 1s ease-out 0.6s both;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--fg);
+      opacity: 0.6;
+      font-size: 1rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 40px rgba(0, 255, 136, 0.15);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      color: var(--fg);
+      opacity: 0.7;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    /* Packages Section */
+    .packages {
+      padding: 6rem 0;
+      background: var(--card-bg);
+      animation: fadeIn 1s ease-out 0.8s both;
+    }
+
+    .package-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .package-item {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      transition: all 0.3s;
+    }
+
+    .package-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .package-info h3 {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .package-info p {
+      color: var(--fg);
+      opacity: 0.7;
+      font-size: 0.875rem;
+    }
+
+    .install-cmd {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      color: var(--fg);
+      white-space: nowrap;
+      user-select: all;
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 0 2rem;
+      border-top: 1px solid var(--card-border);
+      text-align: center;
+      animation: fadeIn 1s ease-out 1s both;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 0.875rem;
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .package-item {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .controls {
+        gap: 0.5rem;
+      }
+
+      .sound-toggle .sound-label {
+        display: none;
+      }
+    }
+
+    /* Cursor effect */
+    @media (hover: hover) {
+      .cursor-glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent 70%);
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s;
+        opacity: 0;
+        z-index: 10;
+      }
+
+      body:hover .cursor-glow {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">domock</a>
+        <div class="controls">
+          <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="https://github.com/wmik/domock" target="_blank">GitHub</a></li>
+            <!-- <li><a href="#docs">Docs</a></li> -->
+          </ul>
+          <button class="sound-toggle" id="soundToggle" aria-label="Toggle ambient sound">
+            <span class="sound-icon">🔇</span>
+            <span class="sound-label">Sound</span>
+          </button>
+          <button class="theme-switcher" id="themeSwitcher" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-tag">
+          <span>npm install </span><span class="typing-text" id="typingText"></span><!--span class="cursor"></span-->
+        </div>
+        <h1>Mock WebRTC APIs<br>for Testing</h1>
+        <p class="hero-subtitle">
+          Custom API mocks for testing WebRTC media APIs. Predictable and controllable
+          MediaStream, MediaStreamTrack, and MediaRecorder implementations.
+        </p>
+        <div class="cta-buttons">
+          <a href="https://github.com/wmik/domock" class="btn btn-primary">
+            View on GitHub →
+          </a>
+          <a href="#packages" class="btn btn-secondary">
+            Browse Packages
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="code-preview">
+      <div class="container">
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="terminal-dot red"></div>
+            <div class="terminal-dot yellow"></div>
+            <div class="terminal-dot green"></div>
+          </div>
+          <div class="terminal-body">
+            <code
+              class="code-line"><span class="code-keyword">import</span> { <span class="code-variable">MediaStream</span> } <span class="code-keyword">from</span> <span class="code-string">'@domock/media-stream'</span>;</code>
+            <code
+              class="code-line"><span class="code-keyword">import</span> { <span class="code-variable">MediaStreamTrack</span> } <span class="code-keyword">from</span> <span class="code-string">'@domock/media-stream-track'</span>;</code>
+            <code
+              class="code-line"><span class="code-keyword">import</span> { <span class="code-variable">MediaRecorder</span> } <span class="code-keyword">from</span> <span class="code-string">'@domock/media-recorder'</span>;</code>
+            <code class="code-line"></code>
+            <code class="code-line"><span class="code-comment">// Create mock instances for testing</span></code>
+            <code
+              class="code-line"><span class="code-keyword">const</span> <span class="code-variable">track</span> = <span class="code-keyword">new</span> <span class="code-function">MediaStreamTrack</span>();</code>
+            <code
+              class="code-line"><span class="code-keyword">const</span> <span class="code-variable">stream</span> = <span class="code-keyword">new</span> <span class="code-function">MediaStream</span>([<span class="code-variable">track</span>]);</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Built for Testing</h2>
+          <p>Everything you need to test WebRTC applications with confidence</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Predictable Behavior</h3>
+            <p>Deterministic mocks that behave consistently across test runs, eliminating flakiness and timing issues.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>Full Control</h3>
+            <p>Control every aspect of media streams and tracks. Simulate edge cases and error conditions easily.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Zero Dependencies</h3>
+            <p>Lightweight implementations with no external dependencies. Fast test execution guaranteed.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3>Modular Packages</h3>
+            <p>Install only what you need. Each API is packaged separately for maximum flexibility.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>TypeScript Native</h3>
+            <p>Written in TypeScript with full type definitions. Get autocomplete and type safety out of the box.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧪</div>
+            <h3>Test Utilities</h3>
+            <p>Additional testing helpers and utilities designed specifically for WebRTC testing scenarios.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="packages" id="packages">
+      <div class="container">
+        <div class="section-header">
+          <h2>Available Packages</h2>
+          <p>Choose the mocks you need for your testing environment</p>
+        </div>
+        <div class="package-list">
+          <div class="package-item">
+            <div class="package-info">
+              <h3>@domock/media-stream</h3>
+              <p>Mock implementation of the MediaStream API with full control over tracks and event handling.</p>
+            </div>
+            <code class="install-cmd">npm install @domock/media-stream</code>
+          </div>
+          <div class="package-item">
+            <div class="package-info">
+              <h3>@domock/media-stream-track</h3>
+              <p>Mock implementation of MediaStreamTrack API including audio and video tracks with custom behaviors.</p>
+            </div>
+            <code class="install-cmd">npm install @domock/media-stream-track</code>
+          </div>
+          <div class="package-item">
+            <div class="package-info">
+              <h3>@domock/media-recorder</h3>
+              <p>Mock MediaRecorder implementation for testing recording functionality without actual media capture.</p>
+            </div>
+            <code class="install-cmd">npm install @domock/media-recorder</code>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="logo">domock</div>
+        <ul class="footer-links">
+          <li><a href="https://github.com/wmik/domock" target="_blank">GitHub</a></li>
+          <!-- <li><a href="#docs">Documentation</a></li> -->
+          <li><a href="https://github.com/wmik/domock/blob/main/license" target="_blank">MIT License</a></li>
+          <li><a href="https://github.com/wmik/domock/issues" target="_blank">Issues</a></li>
+        </ul>
+      </div>
+      <div class="copyright">
+        © 2026 Domock. Open source under MIT License.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Typing Animation
+    const packages = [
+      '@domock/media-stream',
+      '@domock/media-stream-track',
+      '@domock/media-recorder'
+    ];
+
+    let packageIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+    const typingText = document.getElementById('typingText');
+
+    function typePackage() {
+      const currentPackage = packages[packageIndex];
+
+      if (!isDeleting) {
+        typingText.textContent = currentPackage.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentPackage.length) {
+          isDeleting = true;
+          typingSpeed = 2000; // Pause at the end
+        } else {
+          typingSpeed = 100;
+        }
+      } else {
+        typingText.textContent = currentPackage.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          packageIndex = (packageIndex + 1) % packages.length;
+          typingSpeed = 500; // Pause before next package
+        } else {
+          typingSpeed = 50;
+        }
+      }
+
+      setTimeout(typePackage, typingSpeed);
+    }
+
+    // Start typing animation
+    typePackage();
+
+    // Theme Switcher
+    const themeSwitcher = document.getElementById('themeSwitcher');
+    const themeIcon = themeSwitcher.querySelector('.theme-icon');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to dark
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', currentTheme);
+    themeIcon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+    themeSwitcher.addEventListener('click', () => {
+      const theme = html.getAttribute('data-theme');
+      const newTheme = theme === 'dark' ? 'light' : 'dark';
+
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+    });
+
+    // Ambient Sound System using Web Audio API with scheduling loop
+    const soundToggle = document.getElementById('soundToggle');
+    const soundIcon = soundToggle.querySelector('.sound-icon');
+    let audioContext;
+    let isPlaying = false;
+    let schedulerTimeout;
+    let currentNoteIndex = 0;
+    let nextNoteTime = 0;
+
+    const sequence = [
+      440, // A4
+      523.25, // C5
+      659.25, // E5
+      523.25  // C5
+    ];
+
+    const tempo = 160; // BPM
+    const secondsPerBeat = 60.0 / tempo;
+    const noteDuration = secondsPerBeat; // Each note is a quarter note
+    const lookaheadTime = 0.1; // How far ahead to schedule (in seconds)
+
+    // Function to play a single note with electronic character
+    function playNote(frequency, startTime) {
+      // Main oscillator - sawtooth for electronic character
+      const oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, startTime);
+
+      // Sub oscillator for depth
+      const subOsc = audioContext.createOscillator();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(frequency / 2, startTime);
+
+      // Filter for movement
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(800, startTime);
+      filter.Q.setValueAtTime(3, startTime);
+
+      // Sweep filter during note
+      filter.frequency.linearRampToValueAtTime(2000, startTime + 0.1);
+      filter.frequency.exponentialRampToValueAtTime(600, startTime + noteDuration * 0.8);
+
+      // Main note gain envelope
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0, startTime);
+      gainNode.gain.linearRampToValueAtTime(0.25, startTime + 0.08); // Attack
+      gainNode.gain.linearRampToValueAtTime(0.18, startTime + 0.2);  // Decay
+      gainNode.gain.setValueAtTime(0.18, startTime + noteDuration * 0.6); // Sustain
+      gainNode.gain.linearRampToValueAtTime(0.001, startTime + noteDuration); // Release
+
+      // Sub oscillator gain
+      const subGain = audioContext.createGain();
+      subGain.gain.setValueAtTime(0, startTime);
+      subGain.gain.linearRampToValueAtTime(0.15, startTime + 0.1);
+      subGain.gain.linearRampToValueAtTime(0.001, startTime + noteDuration);
+
+      // Delay for space
+      const delay = audioContext.createDelay();
+      delay.delayTime.setValueAtTime(0.15, startTime);
+
+      const delayGain = audioContext.createGain();
+      delayGain.gain.setValueAtTime(0.25, startTime);
+
+      const feedback = audioContext.createGain();
+      feedback.gain.setValueAtTime(0.3, startTime);
+
+      // Connect audio graph
+      oscillator.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      // Connect delay
+      gainNode.connect(delay);
+      delay.connect(delayGain);
+      delayGain.connect(audioContext.destination);
+      delay.connect(feedback);
+      feedback.connect(delay);
+
+      // Connect sub
+      subOsc.connect(subGain);
+      subGain.connect(audioContext.destination);
+
+      // Start and stop
+      oscillator.start(startTime);
+      subOsc.start(startTime);
+      oscillator.stop(startTime + noteDuration + 0.3);
+      subOsc.stop(startTime + noteDuration + 0.3);
+    }
+
+    // Scheduling loop function
+    function scheduleLoop() {
+      if (!isPlaying) return;
+
+      // While there are notes to schedule within the lookahead window
+      while (nextNoteTime < audioContext.currentTime + lookaheadTime) {
+        const noteFreq = sequence[currentNoteIndex];
+        playNote(noteFreq, nextNoteTime);
+
+        // Advance note time and index for the next iteration
+        nextNoteTime += noteDuration;
+        currentNoteIndex = (currentNoteIndex + 1) % sequence.length;
+      }
+
+      // Continuously call the scheduler
+      schedulerTimeout = setTimeout(scheduleLoop, lookaheadTime * 1000);
+    }
+
+    function startAmbientSound() {
+      // Create audio context on first interaction
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      // Resume if suspended
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      // Initialize timing
+      nextNoteTime = audioContext.currentTime;
+      currentNoteIndex = 0;
+      isPlaying = true;
+
+      // Start the scheduling loop
+      scheduleLoop();
+    }
+
+    function stopAmbientSound() {
+      isPlaying = false;
+
+      // Clear the scheduler timeout
+      if (schedulerTimeout) {
+        clearTimeout(schedulerTimeout);
+      }
+    }
+
+    soundToggle.addEventListener('click', () => {
+      if (!isPlaying) {
+        startAmbientSound();
+        soundIcon.textContent = '🔊';
+        soundToggle.classList.add('active');
+      } else {
+        stopAmbientSound();
+        soundIcon.textContent = '🔇';
+        soundToggle.classList.remove('active');
+      }
+    });
+
+    // Cursor glow effect
+    const cursorGlow = document.getElementById('cursorGlow');
+    let mouseX = 0, mouseY = 0;
+    let glowX = 0, glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.1;
+      glowY += (mouseY - glowY) * 0.1;
+
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+
+      requestAnimationFrame(animateGlow);
+    }
+
+    animateGlow();
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
